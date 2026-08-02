@@ -1,0 +1,20 @@
+<p-table [value]="satellites" [loading]="loading" [paginator]="true" [rows]="10">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>NORAD ID</th>
+      <th>NAME</th>
+      <th>Altitude (km)</th>
+      <th>Inclination (°)</th>
+      <th>Velocity (km/s)</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-sat>
+    <tr>
+      <td>{{ sat.noradId }}</td>
+      <td>{{ sat.name }}</td>
+      <td>{{ sat.altitudeKm }}</td>
+      <td>{{ sat.inclinationDeg }}</td>
+      <td>{{ sat.velocityKmS }}</td>
+    </tr>
+  </ng-template>
+</p-table>
