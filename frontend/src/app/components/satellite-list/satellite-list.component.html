@@ -9,7 +9,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-sat>
-    <tr>
+    <tr (click)="selectSatellite(sat)" style="cursor: pointer;">
       <td>{{ sat.noradId }}</td>
       <td>{{ sat.name }}</td>
       <td>{{ sat.altitudeKm }}</td>
@@ -18,3 +18,5 @@
     </tr>
   </ng-template>
 </p-table>
+
+<app-orbit-chart [noradId]="selectedNoradId"></app-orbit-chart>

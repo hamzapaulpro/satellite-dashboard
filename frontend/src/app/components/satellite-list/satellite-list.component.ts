@@ -3,15 +3,18 @@ import { Satellite } from '../../models/satellite.model';
 import { SatelliteService } from '../../services/satellite.service';
 import {CommonModule} from '@angular/common';
 import {TableModule} from 'primeng/table';
+import {OrbitChartComponent} from '../orbit-chart/orbit-chart.component';
 
 @Component({
   selector: 'app-satellite-list',
-  imports: [CommonModule, TableModule],
+  standalone: true,
+  imports: [CommonModule, TableModule, OrbitChartComponent],
   templateUrl: './satellite-list.component.html',
   styleUrl: './satellite-list.component.scss'
 })
 export class SatelliteListComponent implements OnInit {
   satellites: Satellite[] = [];
+  selectedNoradId: string | null = null;
   loading = true;
 
   constructor(private satelliteService: SatelliteService) {}
@@ -29,5 +32,9 @@ export class SatelliteListComponent implements OnInit {
         }
       }
     );
+  }
+
+  selectSatellite(sat: Satellite): void {
+    this.selectedNoradId = sat.noradId;
   }
 }
