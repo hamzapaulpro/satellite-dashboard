@@ -1,4 +1,5 @@
-# Satellite Conjunction & Orbit Dashboard
+![CI](https://github.com/hamzapaulpro/satellite-dashboard/actions/workflows/ci.yml/badge.svg)
+# SatelliteModel Conjunction & Orbit Dashboard
 
 A full-stack tool for tracking satellites, propagating orbits (SGP4),
 visualizing them in 3D, and detecting potential conjunctions (close approaches).
