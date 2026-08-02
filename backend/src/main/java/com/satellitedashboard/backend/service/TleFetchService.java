@@ -1,5 +1,8 @@
 package com.satellitedashboard.backend.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -12,7 +15,10 @@ public class TleFetchService {
     private static final String CELESTRAK_URL = "https://celestrak.org/NORAD/elements/gp.php?GROUP=stations&FORMAT=tle";
     private final RestClient restClient = RestClient.create();
 
+    @Cacheable("tleData")
     public List<String[]> fetchRawTleEntries() {
+        System.out.println("Fetching fresh TLE data from Celestrak...");
+
         String rawText = restClient.get()
                 .uri(CELESTRAK_URL)
                 .retrieve()
@@ -30,6 +36,13 @@ public class TleFetchService {
         }
 
         return entries;
+    }
+
+    // Runs every 3 hours, clears the cache so the next call re-fetches fresh data
+    @Scheduled(fixedRate = 3 * 60 * 60 * 1000)
+    @CacheEvict(value = "tleData", allEntries = true)
+    public void evictCache() {
+        System.out.println("Evicting TLE cache — next request will fetch fresh data");
     }
 
 }
