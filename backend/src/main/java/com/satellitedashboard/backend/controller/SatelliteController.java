@@ -1,11 +1,10 @@
 package com.satellitedashboard.backend.controller;
 
+import com.satellitedashboard.backend.model.OrbitPoint;
 import com.satellitedashboard.backend.model.Satellite;
+import com.satellitedashboard.backend.service.OrbitPropagationService;
 import com.satellitedashboard.backend.service.SatelliteService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,14 +14,24 @@ import java.util.List;
 public class SatelliteController {
 
     private final SatelliteService satelliteService;
+    private final OrbitPropagationService orbitPropagationService;
 
-    public SatelliteController(SatelliteService satelliteService) {
+    public SatelliteController(SatelliteService satelliteService, OrbitPropagationService orbitPropagationService) {
         this.satelliteService = satelliteService;
+        this.orbitPropagationService = orbitPropagationService;
     }
 
     @GetMapping
     public List<Satellite> getAllSatellites() {
         return satelliteService.getAllSatellites();
+    }
+
+    @GetMapping("/{noradId}/orbit")
+    public List<OrbitPoint> getOrbit(
+            @PathVariable String noradId,
+            @RequestParam(defaultValue = "24") int hours,
+            @RequestParam(defaultValue = "5") int stepMinutes) {
+        return orbitPropagationService.propagate(noradId, hours, stepMinutes);
     }
 
 }

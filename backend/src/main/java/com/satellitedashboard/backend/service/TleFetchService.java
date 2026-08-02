@@ -8,6 +8,7 @@ import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class TleFetchService {
@@ -43,6 +44,14 @@ public class TleFetchService {
     @CacheEvict(value = "tleData", allEntries = true)
     public void evictCache() {
         System.out.println("Evicting TLE cache — next request will fetch fresh data");
+    }
+
+    public String[] findByNoradId(String noradId) {
+        return fetchRawTleEntries()
+                .stream()
+                .filter(entry -> entry[1].substring(2, 7).strip().equals(noradId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("No satellite found with NORAD ID: " + noradId));
     }
 
 }
