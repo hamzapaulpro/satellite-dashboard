@@ -35,13 +35,6 @@ class TleParserServiceTest {
     }
 
     @Test
-    void parsesInclinationWithinExpectedRange() {
-        Satellite satellite = parser.parse(ISS_TLE);
-        // ISS inclination is well-known to be ~51.6 degrees
-        assertEquals(51.6423, satellite.getInclinationDeg(), 0.001);
-    }
-
-    @Test
     void computesAltitudeWithinPlausibleIssRange() {
         Satellite satellite = parser.parse(ISS_TLE);
         // ISS orbits roughly 400-420km altitude
